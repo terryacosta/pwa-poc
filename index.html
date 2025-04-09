@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1976d2" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Stock Quote PWA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+    }
+    #result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stock Quote</h1>
+  <input type="text" id="ticker" placeholder="Enter ticker (e.g. AAPL)" />
+  <button onclick="getQuote()">Get Quote</button>
+  <div id="result"></div>
+
+  <script>
+    async function getQuote() {
+      const ticker = document.getElementById('ticker').value.toUpperCase();
+      const resultEl = document.getElementById('result');
+      resultEl.textContent = 'Fetching...';
+
+      try {
+        const res = await fetch(`https://api.twelvedata.com/quote?symbol=${ticker}&apikey=demo`); // replace 'demo' with your real API key
+        const data = await res.json();
+
+        if (data.price) {
+          resultEl.innerHTML = `<strong>${data.symbol}</strong>: $${data.price}`;
+        } else {
+          resultEl.textContent = 'Invalid ticker or API error.';
+        }
+      } catch (error) {
+        resultEl.textContent = 'Error fetching quote.';
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(() => {
+          console.log('Service Worker registered');
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+
+
