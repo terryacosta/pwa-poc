@@ -42,6 +42,10 @@
         const data = await res.json();
         console.log(data);
 
+        console.log('data.status.code: '+data.status.code)
+        console.log('data.result.vehicle.modelName: '+data.result.vehicle.modelName);
+        console.log('data.result.vehicle.usedVehicleAttributes.dsrp: '+data.result.vehicle.usedVehicleAttributes.dsrp);
+        console.log('data.result.vehicle.usedVehicleAttributes.mileage: '+data.result.vehicle.usedVehicleAttributes.mileage);
         if (data.status.code == 200) {
           resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.usedVehicleAttributes.mileage}</span></div>`;
         } else {
