@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'vin-check-v1'; // Add version number
+const CACHE_NAME = 'vin-check-v1.1'; // Add version number
 
 self.addEventListener('install', function (e) {
     e.waitUntil(

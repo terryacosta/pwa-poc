@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1976d2" />
   <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="VIN Lookup">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <title>VIN Lookup</title>
   <style>
     body {
@@ -21,12 +25,29 @@
       margin-top: 1rem;
       font-size: 1.2rem;
     }
+
+    .viewport {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 1000;
+  }
+  .viewport > video {
+    width: 100%;
+    height: 100%;
+  }    
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 </head>
 <body>
   <h1>VIN Lookup</h1>
   <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB5MF964689"/>
   <button onclick="lookupVin()">Lookup VIN</button>
+  <button onclick="startScanning()">Scan VIN</button>
+  <div id="interactive" class="viewport" style="display: none;"></div>
   <div id="result"></div>
 
   <script>
@@ -58,6 +79,70 @@
         resultEl.textContent = 'Error fetching VIN. Error code = ';
       }
     }
+
+    
+      // function startScanning() {
+      //   Quagga.init({
+      //     inputStream: {
+      //       name: "Live",
+      //       type: "LiveStream",
+      //       target: document.querySelector("#interactive"),
+      //       constraints: {
+      //         facingMode: "environment"
+      //       },
+      //     },
+      //     decoder: {
+      //       readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader"]
+      //     }
+      //   }, function(err) {
+      //     if (err) {
+      //       console.error(err);
+      //       return;
+      //     }
+      //     document.getElementById('interactive').style.display = 'block';
+      //     Quagga.start();
+      //   });
+    
+      //   Quagga.onDetected(function(result) {
+      //     if (result.codeResult) {
+      //       document.getElementById('vin').value = result.codeResult.code;
+      //       Quagga.stop();
+      //       document.getElementById('interactive').style.display = 'none';
+      //     }
+      //   });
+      // }
+
+      function startScanning() {
+  Quagga.init({
+    inputStream: {
+      name: "Live",
+      type: "LiveStream",
+      target: document.querySelector("#interactive"),
+      constraints: {
+        facingMode: "environment"  // Use the rear camera
+      },
+    },
+    decoder: {
+      readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader"]
+    }
+  }, function(err) {
+    if (err) {
+      console.error('Quagga initialization failed:', err);
+      alert('Failed to start scanner');
+      return;
+    }
+    document.getElementById('interactive').style.display = 'block';
+    Quagga.start();
+  });
+
+  Quagga.onDetected(function(result) {
+    if (result.codeResult) {
+      document.getElementById('vin').value = result.codeResult.code;
+      Quagga.stop();
+      document.getElementById('interactive').style.display = 'none';
+    }
+  });
+}
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async () => {
