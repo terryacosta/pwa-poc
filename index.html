@@ -45,7 +45,7 @@
 <body>
   <h1>VIN Lookup</h1>
   <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB5MF964689"/>
-  <button onclick="lookupVin()">Lookup VIN</button>
+  <button id="lookup-button" onclick="lookupVin()">Lookup VIN</button>
   <button onclick="startScanning()">Scan VIN</button>
   <div id="interactive" class="viewport" style="display: none;"></div>
   <div id="result"></div>
@@ -112,7 +112,11 @@
       //   });
       // }
 
-      function startScanning() {
+// The following libraries can be used for scanning if Quagga doesn't work:
+//html5-qrcode
+// zxing-js
+// Native iOS camera API through PWA capabilities
+function startScanning() {
   Quagga.init({
     inputStream: {
       name: "Live",
@@ -140,6 +144,7 @@
       document.getElementById('vin').value = result.codeResult.code;
       Quagga.stop();
       document.getElementById('interactive').style.display = 'none';
+      document.getElementById('lookup-button').click(); // Trigger the lookup after scanning
     }
   });
 }
