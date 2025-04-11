@@ -25,7 +25,7 @@
 </head>
 <body>
   <h1>VIN Lookup</h1>
-  <input type="text" id="vin" placeholder="Enter VIN" value=""W1N0G8DB5MF964689"/>
+  <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB5MF964689"/>
   <button onclick="lookupVin()">Lookup VIN</button>
   <div id="result"></div>
 
@@ -36,16 +36,19 @@
       resultEl.textContent = 'Fetching...';
 
       try {
-        const res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); // replace 'demo' with your real API key
+        const res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); 
+        console.log(res);
+        
         const data = await res.json();
+        console.log(data);
 
         if (data.status.code == 200) {
-          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>$${data.result.usedVehicleAttributes.vehicle.mileage}</span></div>`;
+          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.usedVehicleAttributes.vehicle.mileage}</span></div>`;
         } else {
           resultEl.textContent = 'Invalid VIN.';
         }
       } catch (error) {
-        resultEl.textContent = 'Error fetching VIN.';
+        resultEl.textContent = 'Error fetching VIN. Error code = '+data.status.code;
       }
     }
 
