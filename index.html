@@ -25,7 +25,7 @@
 </head>
 <body>
   <h1>VIN Lookup</h1>
-  <input type="text" id="vin" placeholder="Enter VIN" />
+  <input type="text" id="vin" placeholder="Enter VIN" value=""W1N0G8DB5MF964689"/>
   <button onclick="lookupVin()">Lookup VIN</button>
   <div id="result"></div>
 
@@ -40,7 +40,7 @@
         const data = await res.json();
 
         if (data.status.code == 200) {
-          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>$${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>$${data.result.vehicle.mileage}</span></div>`;
+          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>$${data.result.usedVehicleAttributes.vehicle.mileage}</span></div>`;
         } else {
           resultEl.textContent = 'Invalid VIN.';
         }
