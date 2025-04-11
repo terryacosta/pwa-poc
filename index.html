@@ -43,12 +43,12 @@
         console.log(data);
 
         if (data.status.code == 200) {
-          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.usedVehicleAttributes.vehicle.mileage}</span></div>`;
+          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.usedVehicleAttributes.mileage}</span></div>`;
         } else {
           resultEl.textContent = 'Invalid VIN.';
         }
       } catch (error) {
-        resultEl.textContent = 'Error fetching VIN. Error code = '+data.status.code;
+        resultEl.textContent = 'Error fetching VIN. Error code = ';
       }
     }
 
