@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1976d2" />
   <link rel="manifest" href="manifest.json" />
-  <title>Stock Quote PWA</title>
+  <title>VIN Lookup</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -24,28 +24,28 @@
   </style>
 </head>
 <body>
-  <h1>Stock Quote</h1>
-  <input type="text" id="ticker" placeholder="Enter ticker (e.g. AAPL)" />
-  <button onclick="getQuote()">Get Quote</button>
+  <h1>VIN Lookup</h1>
+  <input type="text" id="vin" placeholder="Enter VIN" />
+  <button onclick="lookupVin()">Lookup VIN</button>
   <div id="result"></div>
 
   <script>
-    async function getQuote() {
-      const ticker = document.getElementById('ticker').value.toUpperCase();
+    async function lookupVin() {
+      const vin = document.getElementById('vin').value.toUpperCase();
       const resultEl = document.getElementById('result');
       resultEl.textContent = 'Fetching...';
 
       try {
-        const res = await fetch(`https://api.twelvedata.com/quote?symbol=${ticker}&apikey=demo`); // replace 'demo' with your real API key
+        const res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); // replace 'demo' with your real API key
         const data = await res.json();
 
-        if (data.price) {
-          resultEl.innerHTML = `<strong>${data.symbol}</strong>: $${data.price}`;
+        if (data.status.code == 200) {
+          resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>$${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>$${data.result.vehicle.mileage}</span></div>`;
         } else {
-          resultEl.textContent = 'Invalid ticker or API error.';
+          resultEl.textContent = 'Invalid VIN.';
         }
       } catch (error) {
-        resultEl.textContent = 'Error fetching quote.';
+        resultEl.textContent = 'Error fetching VIN.';
       }
     }
 

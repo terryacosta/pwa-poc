@@ -1,4 +1,4 @@
-<!-- sw.js -->
+
 <script type="text/javascript">
   self.addEventListener('install', function (e) {
     e.waitUntil(
