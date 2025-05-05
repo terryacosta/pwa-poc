@@ -40,13 +40,13 @@
     height: 100%;
   }    
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script> -->
 </head>
 <body>
   <h1>VIN Lookup</h1>
-  <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB5MF964689"/>
+  <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB0MV297388"/>
   <button id="lookup-button" onclick="lookupVin()">Lookup VIN</button>
-  <button onclick="startScanning()">Scan VIN</button>
+  <!-- <button onclick="startScanning()">Scan VIN</button> -->
   <div id="interactive" class="viewport" style="display: none;"></div>
   <div id="result"></div>
 
@@ -116,38 +116,38 @@
 //html5-qrcode
 // zxing-js
 // Native iOS camera API through PWA capabilities
-function startScanning() {
-  Quagga.init({
-    inputStream: {
-      name: "Live",
-      type: "LiveStream",
-      target: document.querySelector("#interactive"),
-      constraints: {
-        facingMode: "environment"  // Use the rear camera
-      },
-    },
-    decoder: {
-      readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader"]
-    }
-  }, function(err) {
-    if (err) {
-      console.error('Quagga initialization failed:', err);
-      alert('Failed to start scanner');
-      return;
-    }
-    document.getElementById('interactive').style.display = 'block';
-    Quagga.start();
-  });
+// function startScanning() {
+//   Quagga.init({
+//     inputStream: {
+//       name: "Live",
+//       type: "LiveStream",
+//       target: document.querySelector("#interactive"),
+//       constraints: {
+//         facingMode: "environment"  // Use the rear camera
+//       },
+//     },
+//     decoder: {
+//       readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader"]
+//     }
+//   }, function(err) {
+//     if (err) {
+//       console.error('Quagga initialization failed:', err);
+//       alert('Failed to start scanner');
+//       return;
+//     }
+//     document.getElementById('interactive').style.display = 'block';
+//     Quagga.start();
+//   });
 
-  Quagga.onDetected(function(result) {
-    if (result.codeResult) {
-      document.getElementById('vin').value = result.codeResult.code;
-      Quagga.stop();
-      document.getElementById('interactive').style.display = 'none';
-      document.getElementById('lookup-button').click(); // Trigger the lookup after scanning
-    }
-  });
-}
+//   Quagga.onDetected(function(result) {
+//     if (result.codeResult) {
+//       document.getElementById('vin').value = result.codeResult.code;
+//       Quagga.stop();
+//       document.getElementById('interactive').style.display = 'none';
+//       document.getElementById('lookup-button').click(); // Trigger the lookup after scanning
+//     }
+//   });
+// }
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async () => {
