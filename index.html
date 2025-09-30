@@ -57,11 +57,17 @@
       resultEl.textContent = 'Fetching...';
 
       try {
-        const res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); 
+        var res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/new/vehicles/lookup/vin?vin=${vin}`); 
         console.log(res);
-        
-        const data = await res.json();
+        var data = await res.json();
         console.log(data);
+
+        if (data.status.code === 404) {
+          res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); 
+          console.log(res);
+          data = await res.json();
+          console.log(data);          
+        }
 
         console.log('data.status.code: '+data.status.code)
         console.log('data.result.vehicle.modelName: '+data.result.vehicle.modelName);
