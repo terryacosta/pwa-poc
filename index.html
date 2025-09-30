@@ -44,7 +44,7 @@
 </head>
 <body>
   <h1>VIN Lookup</h1>
-  <input type="text" id="vin" placeholder="Enter VIN" value="W1N0G8DB0MV297388"/>
+  <input type="text" id="vin" placeholder="Enter VIN" value="W1NWH5AB9SX060409"/>
   <button id="lookup-button" onclick="lookupVin()">Lookup VIN</button>
   <!-- <button onclick="startScanning()">Scan VIN</button> -->
   <div id="interactive" class="viewport" style="display: none;"></div>
@@ -58,22 +58,23 @@
 
       try {
         var res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/new/vehicles/lookup/vin?vin=${vin}`); 
-        console.log(res);
+        console.log("The response is: ", res);
         var data = await res.json();
-        console.log(data);
+        console.log("The data is: ", data);
 
-        if (data.status.code === 404) {
+        if (res.status === 404) {
+          console.log('New vehicle not found, trying used vehicle endpoint');
           res = await fetch(`https://nafta-service.mbusa.com/api/inv/en_us/used/vehicles/lookup/vin?vin=${vin}`); 
-          console.log(res);
+          console.log("The response is: ", res);
           data = await res.json();
-          console.log(data);          
+          console.log("The data is: ", data);
         }
 
         console.log('data.status.code: '+data.status.code)
         console.log('data.result.vehicle.modelName: '+data.result.vehicle.modelName);
-        console.log('data.result.vehicle.usedVehicleAttributes.dsrp: '+data.result.vehicle.usedVehicleAttributes.dsrp);
-        console.log('data.result.vehicle.usedVehicleAttributes.mileage: '+data.result.vehicle.usedVehicleAttributes.mileage);
-        if (data.status.code == 200) {
+        // console.log('data.result.vehicle.usedVehicleAttributes.dsrp: '+data.result.vehicle.usedVehicleAttributes.dsrp);
+        //console.log('data.result.vehicle.usedVehicleAttributes.mileage: '+data.result.vehicle.usedVehicleAttributes.mileage);
+        if (res.status === 200) {
           console.log('VIN Lookup successful');
           //resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.usedVehicleAttributes.mileage}</span></div>`;
           resultEl.innerHTML = `<div><span><strong>Model Name</strong>:</span>&nbsp; <span>${data.result.vehicle.modelName}</span></div><div><span><strong>DSRP</strong>:</span>&nbsp; <span>$${data.result.vehicle.usedVehicleAttributes.dsrp}</span></div><div><span><strong>Mileage</strong>:</span>&nbsp; <span>${data.result.vehicle.usedVehicleAttributes.mileage}</span></div>`;
@@ -82,6 +83,7 @@
           resultEl.textContent = 'Invalid VIN.';
         }
       } catch (error) {
+        console.error('Error fetching VIN data:', error);
         resultEl.textContent = 'Error fetching VIN. Error code = ';
       }
     }
