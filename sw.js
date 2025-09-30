@@ -7,7 +7,13 @@ self.addEventListener('install', function (e) {
         return cache.addAll([
           '/',
           '/index.html',
-          '/manifest.json'
+          '/manifest.json',
+          '/icon-192.png',
+          '/icon-512.png',
+          '/apple-touch-icon.png',
+          '/favicon.ico',
+          '/favicon.svg',
+          '/favicon-96x96.png'
         ]);
       })
     );
